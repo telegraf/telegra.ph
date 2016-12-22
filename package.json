@@ -1,0 +1,37 @@
+{
+  "name": "telegra.ph",
+  "version": "0.1.0",
+  "description": "Tiny API helper for Telegra.ph",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint . && ava test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/telegraf/telegra.ph.git"
+  },
+  "keywords": [
+    "telegra.ph",
+    "telegram"
+  ],
+  "author": "Vitaly Domnikov <dotcypress@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/telegraf/telegra.ph/issues"
+  },
+  "homepage": "https://github.com/telegraf/telegra.ph#readme",
+  "files": [
+    "index.js"
+  ],
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "eslint": "^3.9.1",
+    "eslint-config-standard": "^6.0.0",
+    "eslint-plugin-ava": "^4.0.0",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.0"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
