@@ -47,7 +47,7 @@ class Telegraph {
       author_name: name,
       author_url: url
     })
-  }  
+  }
 
   editPage (path, title, content, authorName, authorUrl, returnContent) {
     return this.callService(`editPage/${path}`, {
