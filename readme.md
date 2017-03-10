@@ -45,11 +45,20 @@ client.getPageList().then((pages) => console.log(pages))
 #### [`createPage`](http://telegra.ph/api#createPage)
 `.createPage(title, content, authorName, authorUrl, returnContent)`
 
+#### [`editAccountInfo`](http://telegra.ph/api#editAccountInfo)
+`.editAccountInfo(shortName, name, url)`
+
 #### [`editPage`](http://telegra.ph/api#editPage)
 `.editPage(path, title, content, authorName, authorUrl, returnContent)`
 
 #### [`getPage`](http://telegra.ph/api#getPage)
 `.getPage(path, returnContent)`
 
+#### [`getViews`](http://telegra.ph/api#getViews)
+`.getViews(path, year, month, day, hour)`
+
 #### [`getPageList`](http://telegra.ph/api#getPageList)
 `.getPageList(path, offset, limit)`
+
+#### [`revokeAccessToken`](http://telegra.ph/api#revokeAccessToken)
+`.revokeAccessToken()`

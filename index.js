@@ -40,6 +40,15 @@ class Telegraph {
     })
   }
 
+  editAccountInfo (shortName, name, url) {
+    return this.callService('editAccountInfo', {
+      access_token: this.options.token,
+      short_name: shortName,
+      author_name: name,
+      author_url: url
+    })
+  }
+
   editPage (path, title, content, authorName, authorUrl, returnContent) {
     return this.callService(`editPage/${path}`, {
       access_token: this.options.token,
@@ -73,6 +82,12 @@ class Telegraph {
       access_token: this.options.token,
       offset: offset,
       limit: limit
+    })
+  }
+
+  revokeAccessToken () {
+    return this.callService('revokeAccessToken', {
+      access_token: this.options.token
     })
   }
 }
