@@ -39,6 +39,13 @@ class Telegraph {
       return_content: returnContent
     })
   }
+  
+  getAccountInfo (fields) {
+    return this.callService('getAccountInfo', {
+      access_token: this.options.token,
+      fields: fields || []
+    })
+  }
 
   editAccountInfo (shortName, name, url) {
     return this.callService('editAccountInfo', {
