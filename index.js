@@ -77,7 +77,7 @@ class Telegraph {
     })
   }
 
-  getPageList (path, offset, limit) {
+  getPageList (offset, limit) {
     return this.callService('getPageList', {
       access_token: this.options.token,
       offset: offset,
