@@ -15,6 +15,9 @@
     "telegra.ph",
     "telegram"
   ],
+  "engines": {
+    "node": ">=6.2.0"
+  },
   "author": "Vitaly Domnikov <oss@vitaly.codes>",
   "license": "MIT",
   "bugs": {
