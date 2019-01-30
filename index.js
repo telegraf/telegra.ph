@@ -18,7 +18,7 @@ class Telegraph {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(payload)
     })
-    .then(unwrap)
+      .then(unwrap)
   }
 
   createAccount (shortName, name, url) {
