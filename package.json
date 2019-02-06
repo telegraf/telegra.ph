@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/telegraf/telegra.ph#readme",
   "files": [
-    "index.js"
+    "index.js",
+    "typings/*.ts"
   ],
   "devDependencies": {
     "ava": "^1.2.0",
