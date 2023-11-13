@@ -14,21 +14,25 @@ export type Options = {
  * @example
  * new Telegraph(token, opts)
  */
-export class Telegraph {
+export default class Telegraph {
   private options: Options
   protected client: Client
 
   constructor(token: string, opts?: Options) {
-    this.options = Object.assign(
-      {
-        token: token,
-        apiRoot: "https://api.telegra.ph",
-      },
-      opts
-    )
+    if (opts?.apiRoot) {
+      opts.apiRoot = opts.apiRoot.endsWith("/") ? opts.apiRoot : opts.apiRoot + "/"
+    }
+    this.options = {
+      apiRoot: "https://api.telegra.ph/",
+      client: HTTPS,
+      ...opts,
+      token,
+    }
 
-    const client = this.options.client || HTTPS
-    this.client = new client(this.options.apiRoot!)
+    if (!this.options.apiRoot) throw new Error("apiRoot is required")
+    if (!this.options.client) throw new Error("client is required")
+
+    this.client = new this.options.client(this.options.apiRoot)
   }
 
   public set token(token: string) {
