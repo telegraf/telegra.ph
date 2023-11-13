@@ -1,9 +1,10 @@
 import type { Account, Node, Page, PageList, PageViews } from "./typings"
-import fetch from "isomorphic-fetch"
+import { type Client, HTTPS } from "./clients"
 
 export type Options = {
-  token: string
-  apiRoot: string
+  token?: string
+  apiRoot?: string
+  client?: new (baseURL: string) => Client
 }
 
 /**
@@ -15,8 +16,9 @@ export type Options = {
  */
 export class Telegraph {
   private options: Options
+  protected client: Client
 
-  constructor(token: string, opts: Options) {
+  constructor(token: string, opts?: Options) {
     this.options = Object.assign(
       {
         token: token,
@@ -24,14 +26,9 @@ export class Telegraph {
       },
       opts
     )
-  }
 
-  protected callService<R = unknown>(method: string, payload: unknown): Promise<R> {
-    return fetch(`${this.options.apiRoot}/${method}`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    }).then(unwrap)
+    const client = this.options.client || HTTPS
+    this.client = new client(this.options.apiRoot!)
   }
 
   public set token(token: string) {
@@ -48,8 +45,8 @@ export class Telegraph {
    * const telegraph = new Telegraph(token)
    * const account = await telegraph.createAccount('Sandbox', 'Anonymous')
    */
-  public createAccount(shortName: string, name: string, url?: string): Promise<Account> {
-    return this.callService("createAccount", {
+  public createAccount<R = Account>(shortName: string, name: string, url?: string): Promise<R> {
+    return this.client.post("createAccount", {
       short_name: shortName,
       author_name: name,
       author_url: url,
@@ -70,8 +67,8 @@ export class Telegraph {
    * const content = [ { tag: 'p', children: [ 'Hello, world!' ] } ]
    * const page = await telegraph.createPage('Sample Page', content, 'Anonymous')
    */
-  public createPage(title: string, content: Array<Node>, authorName: string, authorUrl?: string, returnContent?: boolean): Promise<Page> {
-    return this.callService("createPage", {
+  public createPage<R = Page>(title: string, content: Array<Node>, authorName: string, authorUrl?: string, returnContent?: boolean): Promise<R> {
+    return this.client.post("createPage", {
       access_token: this.options.token,
       title: title,
       author_name: authorName,
@@ -92,12 +89,12 @@ export class Telegraph {
    * const telegraph = new Telegraph(token)
    * const account = await telegraph.editAccountInfo(, 'Anonymous', 'https://telegra.ph/api')
    */
-  public editAccountInfo(
+  public editAccountInfo<R = Account>(
     shortName: string | undefined = undefined,
     name: string | undefined = undefined,
     url: string | undefined = undefined
-  ): Promise<Account> {
-    return this.callService("editAccountInfo", {
+  ): Promise<R> {
+    return this.client.post("editAccountInfo", {
       access_token: this.options.token,
       short_name: shortName,
       author_name: name,
@@ -124,8 +121,8 @@ export class Telegraph {
    * const newContent = [ { tag: 'b', children: [ 'Hello, world!' ] } ]
    * const editedPage = await telegraph.editPage(page.path, 'Sample Page', newContent, 'Anonymous')
    */
-  public editPage(path: string, title: string, content: Array<Node>, authorName?: string, authorUrl?: string, returnContent?: boolean): Promise<Page> {
-    return this.callService(`editPage/${path}`, {
+  public editPage<R = Page>(path: string, title: string, content: Array<Node>, authorName?: string, authorUrl?: string, returnContent?: boolean): Promise<R> {
+    return this.client.post(`editPage/${path}`, {
       access_token: this.options.token,
       title: title,
       author_name: authorName,
@@ -145,8 +142,8 @@ export class Telegraph {
    * const telegraph = new Telegraph(token)
    * const page = await telegraph.getPage('Sample-Page-12-15', true)
    */
-  public getPage(path: string, returnContent?: boolean): Promise<Page> {
-    return this.callService(`getPage/${path}`, {
+  public getPage<R = Page>(path: string, returnContent?: boolean): Promise<R> {
+    return this.client.post(`getPage/${path}`, {
       access_token: this.options.token,
       return_content: returnContent,
     })
@@ -170,8 +167,8 @@ export class Telegraph {
   getViews(path: string, year: number, month: number): Promise<PageViews>
   getViews(path: string, year: number, month: number, day: number): Promise<PageViews>
   getViews(path: string, year: number, month: number, day: number, hour: number): Promise<PageViews>
-  public getViews(path: string, year?: number, month?: number, day?: number, hour?: number): Promise<PageViews> {
-    return this.callService(`getViews/${path}`, {
+  public getViews<R = PageViews>(path: string, year?: number, month?: number, day?: number, hour?: number): Promise<R> {
+    return this.client.post(`getViews/${path}`, {
       access_token: this.options.token,
       year: year,
       month: month,
@@ -190,8 +187,8 @@ export class Telegraph {
    * const telegraph = new Telegraph(token)
    * const pageList = await telegraph.getPageList(undefined, 3)
    */
-  public getPageList(offset?: number, limit?: number): Promise<PageList> {
-    return this.callService("getPageList", {
+  public getPageList<R = PageList>(offset?: number, limit?: number): Promise<R> {
+    return this.client.post("getPageList", {
       access_token: this.options.token,
       offset: offset,
       limit: limit,
@@ -203,23 +200,9 @@ export class Telegraph {
    * @see https://telegra.ph/api#revokeAccessToken
    * @returns {Promise<Account>} On success, returns an [`Account`](https://telegra.ph/api#Account) object with new `access_token` and `auth_url` fields.
    */
-  public revokeAccessToken(): Promise<Account> {
-    return this.callService("revokeAccessToken", {
+  public revokeAccessToken<R = Account>(): Promise<R> {
+    return this.client.post("revokeAccessToken", {
       access_token: this.options.token,
     })
   }
-}
-
-function unwrap(res) {
-  if (!res.ok) {
-    const err: Error & { statusCode?: any } = new Error(res.statusText || "Error calling telegra.ph")
-    err.statusCode = res.status
-    throw err
-  }
-  return res.json().then((json) => {
-    if ("ok" in json && !json.ok) {
-      throw new Error(json.error || "Error calling telegra.ph")
-    }
-    return json.result
-  })
 }
