@@ -36,9 +36,5 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0"
-  },
-  "dependencies": {
-    "@types/isomorphic-fetch": "^0.0.39",
-    "isomorphic-fetch": "^2.2.1"
   }
 }
