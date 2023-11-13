@@ -2,7 +2,7 @@
   "name": "telegra.ph",
   "version": "1.0.1",
   "description": "Tiny API helper for Telegra.ph",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "eslint . && ava test"
   },
@@ -25,8 +25,9 @@
   },
   "homepage": "https://github.com/telegraf/telegra.ph#readme",
   "files": [
-    "index.js",
-    "typings/*.ts"
+    "dist",
+    "LICENSE",
+    "readme.md"
   ],
   "devDependencies": {
     "ava": "^1.2.0",
@@ -37,8 +38,5 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0"
-  },
-  "dependencies": {
-    "isomorphic-fetch": "^2.2.1"
   }
 }
