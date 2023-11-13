@@ -42,6 +42,18 @@ const pages = await client.getPageList()
 console.log(pages)
 ```
 
+### Use arbitrary HTTP Client
+
+```js
+import Telegraph from "telegra.ph"
+import { Fetch } from "telegra.ph/clients"
+
+const client = new Telegraph(process.env.TOKEN, { client: Fetch })
+
+const pages = await client.getPageList()
+console.log(pages)
+```
+
 ## API documentation
 
 #### [`createAccount`](http://telegra.ph/api#createAccount)
