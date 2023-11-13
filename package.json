@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/telegraf/telegra.ph#readme",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "readme.md"
   ],
   "devDependencies": {
     "ava": "^1.2.0",
